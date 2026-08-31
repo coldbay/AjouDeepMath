@@ -3,11 +3,19 @@ set -euo pipefail
 
 # 필요하면 실행 전에 같은 이름의 환경 변수로 경로를 덮어쓸 수 있습니다.
 # 예: MODEL_PATH=/mnt/models/Qwen2.5-3B-Instruct bash run_train.sh
-MODEL_PATH="${MODEL_PATH:-~/shared/nvme1/bonghyun/Qwen2.5-3B-Instruct}"
+NVME_NAME="nvme1"
+if ip -br addr 2>/dev/null | awk '$1 == "eno2" { found=1 } END { exit !found }'; then
+  NVME_NAME="nvme4000"
+fi
+MODEL_PATH="${MODEL_PATH:-$HOME/shared/hdd_ext/$NVME_NAME/bonghyun/Qwen2.5-3B-Instruct}"
 TRAIN_FILE="${TRAIN_FILE:-dataset/deep_chal_math_train_filtered.csv}"
 PSEUDO_DATA="${PSEUDO_DATA:-artifacts/pseudo_solutions.jsonl}"
 OUTPUT_DIR="${OUTPUT_DIR:-artifacts/qwen-math-lora}"
 PYTHON_BIN="${PYTHON_BIN:-python}"
+CUDA_ID="${CUDA_ID:-${CUDA_VISIBLE_DEVICES:-0}}"
+
+export CUDA_DEVICE_ORDER=PCI_BUS_ID
+export CUDA_VISIBLE_DEVICES="$CUDA_ID"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
@@ -36,6 +44,7 @@ echo "베이스 모델: $MODEL_PATH"
 echo "학습 데이터: $TRAIN_FILE"
 echo "자기 풀이: $PSEUDO_DATA"
 echo "출력 폴더: $OUTPUT_DIR"
+echo "사용할 물리 GPU: $CUDA_ID"
 
 "$PYTHON_BIN" main.py train \
   --model-path "$MODEL_PATH" \

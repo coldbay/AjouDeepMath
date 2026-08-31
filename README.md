@@ -1,6 +1,5 @@
 # Qwen2.5-3B LLM Math Challenge
 
-`guideline/`에 저장된 대회 규칙에 맞춘 오프라인 파이프라인입니다.
 
 구성 요소와 데이터 흐름에 대한 자세한 설명은 [ARCHITECTURE.md](ARCHITECTURE.md)를 참고하세요.
 
