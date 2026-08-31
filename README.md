@@ -14,7 +14,7 @@
 대회 파일을 다음처럼 두는 것을 권장합니다. 파일명은 달라도 CLI에 실제 경로를 주면 됩니다.
 
 ```text
-data/
+dataset/
   deep_chal_math_train.csv
   train_filtered_ids.csv
   deep_chal_math_leaderboard_filtered.csv
@@ -38,8 +38,8 @@ export QWEN_MODEL_PATH=/shared/Qwen2.5-3B-Instruct
 
 ```bash
 python main.py inspect \
-  --train data/deep_chal_math_train.csv \
-  --filter-ids data/train_filtered_ids.csv
+  --train dataset/deep_chal_math_train.csv \
+  --filter-ids dataset/train_filtered_ids.csv
 ```
 
 ## 3. 검증된 자기 풀이 생성
@@ -49,8 +49,8 @@ python main.py inspect \
 ```bash
 python main.py bootstrap \
   --model-path /shared/Qwen2.5-3B-Instruct \
-  --train data/deep_chal_math_train.csv \
-  --filter-ids data/train_filtered_ids.csv \
+  --train dataset/deep_chal_math_train.csv \
+  --filter-ids dataset/train_filtered_ids.csv \
   --samples-per-question 4 \
   --output artifacts/pseudo_solutions.jsonl
 ```
@@ -77,8 +77,8 @@ MODEL_PATH=/mnt/models/Qwen2.5-3B-Instruct ./run_train.sh
 ```bash
 python main.py train \
   --model-path /shared/Qwen2.5-3B-Instruct \
-  --train data/deep_chal_math_train.csv \
-  --filter-ids data/train_filtered_ids.csv \
+  --train dataset/deep_chal_math_train.csv \
+  --filter-ids dataset/train_filtered_ids.csv \
   --pseudo-data artifacts/pseudo_solutions.jsonl \
   --output-dir artifacts/qwen-math-lora
 ```
@@ -91,8 +91,8 @@ A5000 24GB 기본값은 BF16, batch 2, gradient accumulation 8, sequence length 
 python main.py evaluate \
   --model-path /shared/Qwen2.5-3B-Instruct \
   --adapter-path artifacts/qwen-math-lora \
-  --train data/deep_chal_math_train.csv \
-  --filter-ids data/train_filtered_ids.csv \
+  --train dataset/deep_chal_math_train.csv \
+  --filter-ids dataset/train_filtered_ids.csv \
   --num-samples 5
 ```
 
@@ -102,10 +102,10 @@ python main.py evaluate \
 
 ```bash
 python main.py predict \
-  --model-path /shared/Qwen2.5-3B-Instruct \
+  --model-path [Qwen2.5-3B-Instruct 원본 모델 경로] \
   --adapter-path artifacts/qwen-math-lora \
-  --test data/deep_chal_math_leaderboard_filtered.csv \
-  --num-samples 5 \
+  --test dataset/test_submission_input.csv \
+  --num-samples 7 \
   --output submission.csv
 ```
 

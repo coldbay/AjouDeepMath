@@ -35,7 +35,7 @@ PythonProject/
 실행 중 생성되는 데이터와 가중치는 다음 위치를 사용한다.
 
 ```text
-data/                            # 대회 CSV 파일
+dataset/                            # 대회 CSV 파일
 artifacts/
 ├─ pseudo_solutions.jsonl        # 정답으로 검증된 자기 풀이
 ├─ pseudo_solutions.jsonl.progress
@@ -45,7 +45,7 @@ artifacts/
 submission.csv                   # Kaggle 제출 파일
 ```
 
-`data/`, `artifacts/`, `submission.csv`는 Git 추적 대상에서 제외된다.
+`dataset/`, `artifacts/`, `submission.csv`는 Git 추적 대상에서 제외된다.
 
 ## 3. 전체 데이터 흐름
 
